@@ -86,19 +86,6 @@ class Hangman extends Component {
       guessed: st.guessed.add(letter),
       livesRemaining: st.livesRemaining - (st.gameWord.includes(letter) ? 0 : 1)
     }));
-
-    console.log(`${this.state.livesRemaining} hi`);
-
-    // const notWinner = this.win();
-
-    // if (this.state.livesRemaining <= 0) {
-      
-      
-    //   this.loss()
-    // } else if (notWinner === false) {
-    //   console.log("i win");
-    //   this.winner()
-    // }
   }
 
   winner() {
@@ -108,25 +95,12 @@ class Hangman extends Component {
     return "You win!"
   }
 
-  loss() {
-    // this.setState(st => ({
-      
-    //   endGame: true
-    // }));
-
-    return "<h1>You Lose!</h1>";
-  }
 
   gameState() {
     console.log("this.state.endGame")
     const notWinner = this.win();
-    //this.generateABCtiles();
-    
 
     if (this.state.livesRemaining <= 0) {
-      // this.setState(st => ({
-      //   endGame: true
-      // }));
 
       return <h2 className='Hangman-word'>You lose, the game word is <span className='bold-color'>{this.state.gameWord}!</span></h2> 
     } else if (notWinner === false) {
@@ -161,17 +135,6 @@ class Hangman extends Component {
 
   }
 
-  // randomAbcTiles() {
-
-  //   //shuffling thru the array to make ABC tiles random 
-  //   return this.generateABCtiles().map((a) => ({
-  //     sort: Math.random(),
-  //     value: a
-  //   }))
-  //     .sort((a, b) => a.sort - b.sort)
-  //     .map((a) => a.value)
-  //   //console.log(randArr)
-  // }
 
 
   win() {
@@ -184,15 +147,6 @@ class Hangman extends Component {
 
 
   render() {
-    // const gameOver = this.state.livesRemaining <= 0;
-    // const notWinner = this.win();
-    // let gameState = this.generateABCtiles();
-    // //false if some this.gameArr() that means there are no blanks 
-    // if (notWinner === false) gameState = "You win!";
-    // if (gameOver) gameState = "You Lose!";
-    // let jj = if (this.gameState() === "You Lose!" || "You WIN!") 
-    //console.log(this.state.endGame);
-   
 
     return (
 
