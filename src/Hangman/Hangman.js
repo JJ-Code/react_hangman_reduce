@@ -88,12 +88,6 @@ class Hangman extends Component {
     }));
   }
 
-  winner() {
-    this.setState(st => ({
-      endGame: true
-    }));
-    return "You win!"
-  }
 
 
   gameState() {
@@ -192,7 +186,6 @@ class Hangman extends Component {
           <br /><br />
           <div className="landing--line"> </div>
           {/* <!-- this is to create clicking board --> */}
-
           <h2 id="dom-update"> </h2>
 
           <div id="abc-tiles" className="gameState"> {this.gameState()} </div> <br />
