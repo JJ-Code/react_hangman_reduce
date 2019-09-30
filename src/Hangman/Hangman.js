@@ -66,13 +66,6 @@ class Hangman extends Component {
     });
   }
 
-  wrongLetter(a, b) {
-    return <img src={`./images/${a}-title.jpg`}
-      className="blank-letter letter"
-      alt="" key={`${a}+${b}`} letter={a} />
-
-  }
-
 
   wrongTiles() {
     let tempArr = []
@@ -118,7 +111,6 @@ class Hangman extends Component {
     const notWinner = this.win();
 
     if (this.state.livesRemaining <= 0) {
-
       return <h2 className='Hangman-word'>You lose, the game word is <span className='bold-color'>{this.state.gameWord}!</span></h2>
     } else if (notWinner === false) {
       return <h2 className='Hangman-word'>You WIN! Yippy!!!</h2>
@@ -148,8 +140,6 @@ class Hangman extends Component {
     }))
       .sort((a, b) => a.sort - b.sort)
       .map((a) => a.value)
-    //console.log(randArr)
-
   }
 
 
