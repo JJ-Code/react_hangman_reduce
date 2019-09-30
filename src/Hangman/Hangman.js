@@ -3,16 +3,11 @@ import { randomWord } from "./words";
 import ClueBttn from '../components/ClueBttn/';
 import Timer from '../components/Timer';
 import "./Hangman.css";
-import AbcTiles from "../components/TileBoard"
 import ReactStopwatch from 'react-stopwatch';
 
 
 
 class Hangman extends Component {
-  /** by default, allow 5 guesses and use provided gallows images. */
-  // static defaultProps = {
-  //   maxWrong: 6
-  // }
 
   constructor(props) {
     super(props);
@@ -24,11 +19,12 @@ class Hangman extends Component {
       seconds: 0,
       wins: 0,
       losses: 0,
-      endGame: false
+      clueResults: ""
     };
     this.handleGuess = this.handleGuess.bind(this);
     this.reset = this.reset.bind(this);
     //this.startTimer = this.startTimer.bind(this)
+    this.updateClue = this.updateClue.bind(this);
   }
 
   reset() {
@@ -41,7 +37,7 @@ class Hangman extends Component {
       seconds: 0,
       losses: test ? st.losses += 1 : st.losses,
       wins: test ? st.wins : st.wins += 1,
-      endGame: false
+      clueResults: ""
     }));
   }
 
@@ -70,16 +66,42 @@ class Hangman extends Component {
     });
   }
 
+  wrongLetter(a, b) {
+    return <img src={`./images/${a}-title.jpg`}
+      className="blank-letter letter"
+      alt="" key={`${a}+${b}`} letter={a} />
+
+  }
+
+
+  wrongTiles() {
+    let tempArr = []
+    this.state.guessed.forEach((letter, i) => {
+      console.log(this.state.guessed.size);
+      if (this.state.guessed.size > 0) { 
+        console.log(`LLL ${letter}!`);
+        this.wrongLetter(letter, i)
+        return tempArr.push(letter);
+      } 
+
+    });
+
+    return tempArr.map((letter, i) => {
+      return <img src={`./images/${letter}-title.jpg`}
+        className="blank-letter letter"
+        alt="" key={`${letter}+${i}`} letter={letter} />
+    })
+  }
+
+
 
   handleGuess(event) {
     event.preventDefault()
     console.log(event.currentTarget.attributes)
     console.log(event.currentTarget.attributes.letter.value)
     console.log(this.state.livesRemaining)
-
     let letter = event.currentTarget.attributes.letter.value;
-    
-    //this.win()
+
     //put all gussed in the letter array and 
     //check to see if gussed letter is in gameword. If it is -0 lives. If it is not minus 1.
     this.setState(st => ({
@@ -91,14 +113,15 @@ class Hangman extends Component {
 
 
   gameState() {
-    console.log("this.state.endGame")
+    // console.log(this.state.guessed)
+
     const notWinner = this.win();
 
     if (this.state.livesRemaining <= 0) {
 
-      return <h2 className='Hangman-word'>You lose, the game word is <span className='bold-color'>{this.state.gameWord}!</span></h2> 
+      return <h2 className='Hangman-word'>You lose, the game word is <span className='bold-color'>{this.state.gameWord}!</span></h2>
     } else if (notWinner === false) {
-      return <h2 className='Hangman-word'>You WIN! Yippy!!!</h2>  
+      return <h2 className='Hangman-word'>You WIN! Yippy!!!</h2>
     } else {
       return this.generateABCtiles();
     }
@@ -138,6 +161,12 @@ class Hangman extends Component {
   }
 
 
+  updateClue(data) {
+    this.setState({
+      clueResults: data
+    });
+
+  }
 
 
   render() {
@@ -147,7 +176,7 @@ class Hangman extends Component {
       <div className="landing--title">
         <h1>Movie Scrabble Hangman!</h1> <br />
         <p>Click a letter</p><br />
-        {console.log(this.endGame)}
+
         <div className="row">
           <div className="col-md-4">
             <h2>Number of Lives: <span className="lives-score"> {this.state.livesRemaining} </span> </h2>
@@ -181,7 +210,7 @@ class Hangman extends Component {
         <div id="game-area">
 
           {/* <!-- create space for blank letters. If gameover will display word-->*/}
-          {this.win() ? <div id="word-to-guess">{this.guessedWord()}</div> : <h2 className='Hangman-word'></h2>}
+          {this.win() ? <div id="word-to-guess">{this.guessedWord()}</div> : <h2 className='Hangman-word'> </h2>}
 
           <br /><br />
           <div className="landing--line"> </div>
@@ -189,13 +218,13 @@ class Hangman extends Component {
           <h2 id="dom-update"> </h2>
 
           <div id="abc-tiles" className="gameState"> {this.gameState()} </div> <br />
-          <ClueBttn word={this.state.gameWord} gameOver={this.endGame} /> <br /> <br />
+          <ClueBttn word={this.state.gameWord} clue={this.state.clueResults} updateClue={this.updateClue} /> <br /> <br />
           {/* {console.log(jj)} */}
           <button id="reset-game" className="primary-btn" onClick={this.reset} type="button">Reset Game</button>
           <div className="landing--line"> </div>
           <br /> <br />
           {/* <!-- this is to where the wrong tiles will go--> */}
-          <div id="wrong-tiles"></div>
+          <div id="wrong-tiles">{this.wrongTiles()}</div>
 
         </div>
       </div>
